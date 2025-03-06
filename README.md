@@ -1,6 +1,6 @@
 # Установка
 ```bash
-make install
+$ make install
 ```
 
 # Проект: Система расчета скидок
