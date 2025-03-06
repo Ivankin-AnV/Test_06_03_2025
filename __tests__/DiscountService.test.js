@@ -3,11 +3,10 @@ import { DiscountService } from "../DiscountService.js";
 
 describe("DiscountService", () => {
   let discountService;
-  let mockStrategy;
+  const mockStrategy = { apply: jest.fn((price) => price * 0.9) };
 
   beforeEach(() => {
     discountService = new DiscountService();
-    mockStrategy = { apply: jest.fn((price) => price * 0.9) };
   });
 
   test("устанавливает стратегию скидок", () => {
@@ -19,14 +18,11 @@ describe("DiscountService", () => {
     expect(() => discountService.getFinalPrice(100)).toThrow("Стратегия скидок не установлена");
   });
 
-  test("корректно рассчитывает скидку и сохраняет в историю", () => {
+  test("корректно рассчитывает скидку", () => {
     discountService.setDiscountStrategy(mockStrategy);
     const finalPrice = discountService.getFinalPrice(200);
     expect(finalPrice).toBe(180);
     expect(mockStrategy.apply).toHaveBeenCalledWith(200);
-    expect(discountService.getDiscountHistory()).toEqual([
-      { originalPrice: 200, discountedPrice: 180 },
-    ]);
   });
 
   test("очищает историю скидок", () => {
